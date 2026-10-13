@@ -1,0 +1,25 @@
+// Signing for the app and the camera extension.
+//
+// Out of the box Mirada builds with ad-hoc ("sign to run locally") signing,
+// so anyone can build and run it. To sign with your own Apple team, create
+// Config/Local.xcconfig (git-ignored) containing:
+//
+//   CODE_SIGN_STYLE = Automatic
+//   CODE_SIGN_IDENTITY = Apple Development
+//   DEVELOPMENT_TEAM = ABCDE12345
+//
+// Mirada's own camera extension can only be activated with a paid Apple
+// Developer team; add MIRADA_PAID_TEAM = YES there to embed the entitlement.
+// Free teams and ad-hoc builds publish through OBS Virtual Camera instead.
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY = -
+DEVELOPMENT_TEAM =
+MIRADA_PAID_TEAM = NO
+
+#include? "Local.xcconfig"
+
+// Picks the app entitlements: only paid teams may embed the system-extension
+// install entitlement (provisioning fails otherwise).
+MIRADA_ENTITLEMENTS_YES = App/Mirada-SystemExtension.entitlements
+MIRADA_ENTITLEMENTS_NO = App/Mirada.entitlements
+MIRADA_APP_ENTITLEMENTS = $(MIRADA_ENTITLEMENTS_$(MIRADA_PAID_TEAM))

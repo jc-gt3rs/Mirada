@@ -1,0 +1,14 @@
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+build/
+*.xcodeproj/
+xcuserdata/
+tools/.venv/
+tools/upstream/
+tools/__pycache__/
+Tests/Fixtures/local/
+
+# Personal signing settings
+Config/Local.xcconfig

@@ -1,0 +1,146 @@
+[
+  {
+    "metadataOutputVersion" : "3.0",
+    "shortDescription" : "FLX gaze warping flow (Hsu et al. 2019), both eyes. Weights BSD-3, (c) 2019 Chih-Fan Hsu.",
+    "outputSchema" : [
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 48 × 64 × 2)",
+        "shortDescription" : "",
+        "shape" : "[1, 48, 64, 2]",
+        "name" : "left_flow",
+        "type" : "MultiArray"
+      },
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 48 × 64 × 2)",
+        "shortDescription" : "",
+        "shape" : "[1, 48, 64, 2]",
+        "name" : "left_light",
+        "type" : "MultiArray"
+      },
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 48 × 64 × 2)",
+        "shortDescription" : "",
+        "shape" : "[1, 48, 64, 2]",
+        "name" : "right_flow",
+        "type" : "MultiArray"
+      },
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 48 × 64 × 2)",
+        "shortDescription" : "",
+        "shape" : "[1, 48, 64, 2]",
+        "name" : "right_light",
+        "type" : "MultiArray"
+      }
+    ],
+    "version" : "1",
+    "modelParameters" : [
+
+    ],
+    "specificationVersion" : 8,
+    "storagePrecision" : "Float16",
+    "mlProgramOperationTypeHistogram" : {
+      "Ios17.linear" : 6,
+      "Ios17.transpose" : 6,
+      "Ios17.sub" : 2,
+      "Ios17.conv" : 26,
+      "Ios17.concat" : 12,
+      "UpsampleNearestNeighbor" : 2,
+      "Ios17.sliceByIndex" : 4,
+      "Ios17.batchNorm" : 20,
+      "Ios16.relu" : 26,
+      "Ios16.avgPool" : 4,
+      "Tile" : 2,
+      "Ios17.tanh" : 4,
+      "Ios16.softmax" : 2,
+      "Ios17.reshape" : 4,
+      "Ios17.cast" : 9
+    },
+    "computePrecision" : "Mixed (Float16, Float32, Int32)",
+    "stateSchema" : [
+
+    ],
+    "isUpdatable" : "0",
+    "availability" : {
+      "macOS" : "14.0",
+      "tvOS" : "17.0",
+      "visionOS" : "1.0",
+      "watchOS" : "10.0",
+      "iOS" : "17.0",
+      "macCatalyst" : "17.0"
+    },
+    "modelType" : {
+      "name" : "MLModelType_mlProgram"
+    },
+    "inputSchema" : [
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 48 × 64 × 3)",
+        "shortDescription" : "",
+        "shape" : "[1, 48, 64, 3]",
+        "name" : "left_image",
+        "type" : "MultiArray"
+      },
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 12)",
+        "shortDescription" : "",
+        "shape" : "[1, 12]",
+        "name" : "left_anchors",
+        "type" : "MultiArray"
+      },
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 48 × 64 × 3)",
+        "shortDescription" : "",
+        "shape" : "[1, 48, 64, 3]",
+        "name" : "right_image",
+        "type" : "MultiArray"
+      },
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 12)",
+        "shortDescription" : "",
+        "shape" : "[1, 12]",
+        "name" : "right_anchors",
+        "type" : "MultiArray"
+      },
+      {
+        "hasShapeFlexibility" : "0",
+        "isOptional" : "0",
+        "dataType" : "Float32",
+        "formattedType" : "MultiArray (Float32 1 × 2)",
+        "shortDescription" : "",
+        "shape" : "[1, 2]",
+        "name" : "angle",
+        "type" : "MultiArray"
+      }
+    ],
+    "userDefinedMetadata" : {
+      "com.github.apple.coremltools.version" : "9.0",
+      "com.github.apple.coremltools.source" : "milinternal",
+      "com.github.apple.coremltools.conversion_date" : "2026-10-13"
+    },
+    "generatedClassName" : "FLXFlow16",
+    "method" : "predict"
+  }
+]

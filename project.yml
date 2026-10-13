@@ -1,0 +1,60 @@
+name: Mirada
+options:
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+configFiles:
+  Debug: Config/Signing.xcconfig
+  Release: Config/Signing.xcconfig
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 1
+    ARCHS: arm64
+    ONLY_ACTIVE_ARCH: YES
+    ENABLE_HARDENED_RUNTIME: YES
+    DEAD_CODE_STRIPPING: YES
+packages:
+  Mirada:
+    path: .
+targets:
+  MiradaApp:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+    dependencies:
+      - package: Mirada
+        product: MiradaKit
+      - package: Mirada
+        product: MiradaArt
+      - target: MiradaCamera
+        embed: true
+        copy:
+          destination: plugins
+          subpath: ../Library/SystemExtensions
+    settings:
+      base:
+        PRODUCT_NAME: Mirada
+        PRODUCT_BUNDLE_IDENTIFIER: com.jcantor.mirada
+        INFOPLIST_FILE: App/Info.plist
+        CODE_SIGN_ENTITLEMENTS: $(MIRADA_APP_ENTITLEMENTS)
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+  MiradaCamera:
+    type: system-extension
+    platform: macOS
+    sources:
+      - path: CameraExtension
+        excludes: ["*.plist", "*.entitlements"]
+    dependencies:
+      - package: Mirada
+        product: MiradaArt
+    settings:
+      base:
+        PRODUCT_NAME: com.jcantor.mirada.camera
+        PRODUCT_BUNDLE_IDENTIFIER: com.jcantor.mirada.camera
+        INFOPLIST_FILE: CameraExtension/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CameraExtension/MiradaCamera.entitlements
+        SKIP_INSTALL: YES
