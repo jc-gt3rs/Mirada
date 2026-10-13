@@ -96,7 +96,7 @@ Every control has a VoiceOver label; the sliders and the before/after divider ca
 ## How it works
 
 ```mermaid
-flowchart LR
+flowchart TD
     CAM["Camera or video file<br/>IOSurface BGRA frame"] --> VIS["Apple Vision<br/>face box + 6 points per eye + pupils"]
     VIS --> SMOOTH["One Euro smoothing"]
     SMOOTH --> GATE{"Blink?<br/>Head turned?<br/>Face too small?"}
@@ -172,13 +172,13 @@ Averaging both eyes cancels each eye's mirror-image bias. With head yaw $\psi$ a
 
 $$\varphi_h = (\psi - \psi_0) + g_h\,(\bar u - u_0), \qquad \varphi_v = -g_v\,(\bar v - v_0)\cdot\tau(\varphi_h)$$
 
-$$\tau(\varphi_h) = \operatorname{clamp}\!\left(1 - \frac{|\varphi_h| - 10^\circ}{20^\circ},\ 0,\ 1\right)$$
+$$\tau(\varphi_h) = \mathrm{clamp}\!\left(1 - \frac{|\varphi_h| - 10^\circ}{20^\circ},\ 0,\ 1\right)$$
 
 in radians, then converted to degrees and capped at ±45°. The gains default to $g_h = 4.0$ and $g_v = 7.5$. The **2. camera** calibration solves for your own $g_v$: looking at the lens must give $\varphi_v = \theta_v$, so $g_v = \theta_v / (-(\bar v - v_0))$. $\tau$ stops a corner-turned iris (whose almond-shaped socket shifts the pupil up or down) from reading as vertical gaze.
 
 ### 5. The correction sent to the model
 
-$$\boldsymbol{\alpha} = \operatorname{clamp}\big(\boldsymbol{\theta} - \boldsymbol{\varphi}\big) \cdot s \cdot \lambda$$
+$$\boldsymbol{\alpha} = \mathrm{clamp}\big(\boldsymbol{\theta} - \boldsymbol{\varphi}\big) \cdot s \cdot \lambda$$
 
 clamped to the training range ($|\alpha_v| \le 30^\circ$, $|\alpha_h| \le 40^\circ$), with $s$ the strength and $\lambda$ the fade.
 
@@ -194,7 +194,7 @@ $$\hat x_i = \left\lfloor (x_i - \ell)\tfrac{64}{w_c} + \tfrac12 \right\rfloor, 
 
 ### 7. The FLX network
 
-Inputs: the RGB crop $I$ (48×64×3), the anchor map $A$ (48×64×12) and $\boldsymbol{\alpha}$. An MLP encodes $\boldsymbol{\alpha}$ into 16 channels tiled over the crop; a coarse level at half resolution and a fine level, both densely connected CNNs, predict a flow $\boldsymbol{\phi} = \tanh(\cdot)$ and light weights $\boldsymbol{\ell} = \operatorname{softmax}(\cdot)$. About 250k parameters per eye.
+Inputs: the RGB crop $I$ (48×64×3), the anchor map $A$ (48×64×12) and $\boldsymbol{\alpha}$. An MLP encodes $\boldsymbol{\alpha}$ into 16 channels tiled over the crop; a coarse level at half resolution and a fine level, both densely connected CNNs, predict a flow $\boldsymbol{\phi} = \tanh(\cdot)$ and light weights $\boldsymbol{\ell} = \mathrm{softmax}(\cdot)$. About 250k parameters per eye.
 
 The warp samples the source at
 
@@ -208,7 +208,7 @@ $$O = \ell_1 \cdot S(x_s, y_s) + \ell_2$$
 
 For every output pixel inside a crop, at crop-normalised position $(s, t)$, the kernel computes the model-grid position $\mathbf{m} = (64s - \tfrac12,\ 48t - \tfrac12)$. It samples $\boldsymbol{\phi}, \boldsymbol{\ell}$ bilinearly there, maps $(x_s, y_s)$ back to full-resolution frame coordinates, samples the **original** frame, and blends:
 
-$$a = \operatorname{smoothstep}(3, 9, \min(m_x, 63 - m_x)) \cdot \operatorname{smoothstep}(3, 8, \min(m_y, 47 - m_y)) \cdot \lambda$$
+$$a = \mathrm{smoothstep}(3, 9, \min(m_x, 63 - m_x)) \cdot \mathrm{smoothstep}(3, 8, \min(m_y, 47 - m_y)) \cdot \lambda$$
 
 $$\text{out} = (1 - a)\,\text{orig} + a\,\big(\ell_1 \cdot \text{frame}(x_s, y_s) + \ell_2\big)$$
 
